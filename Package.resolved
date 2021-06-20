@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "MeditoModels",
+        "repositoryURL": "https://github.com/lukacs-m/MeditoModels",
+        "state": {
+          "branch": null,
+          "revision": "d8eace1b4bfc55f53b256e422881b2229062765e",
+          "version": "0.1.4"
+        }
+      },
+      {
+        "package": "Networking",
+        "repositoryURL": "https://github.com/lukacs-m/Networking",
+        "state": {
+          "branch": null,
+          "revision": "6a491ea89fc162defa430ac6ca2414b636313897",
+          "version": "0.3.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
