@@ -26,9 +26,7 @@ public protocol NetworkDataFetching {
     func getData<ReturnType: NetworkingJSONDecodable>(ofKind: ReturnType.Type,
                                                       from path: String,
                                                       with params: Params?) -> AnyPublisher<ReturnType, Error>
-//
-//    func getData<ReturnType: NetworkingJSONDecodable>(ofKind: ReturnType.Type,
-//                                                      from path: String) -> AnyPublisher<ReturnType, Error>
+    
 }
 
 extension NetworkDataFetching {
@@ -44,7 +42,7 @@ final public class APIService: NetworkingService {
     public var network = NetworkingClient(baseURL: APIConfig.baseUrl)
     private var apiKey: String?
     
-    init() {
+    public init() {
         setUp()
     }
     
@@ -67,11 +65,6 @@ extension APIService: NetworkDataFetching {
            return get(path)
         }
     }
-//    
-//    public func getData<ReturnType: NetworkingJSONDecodable>(ofKind: ReturnType.Type,
-//                                                             from path: String) -> AnyPublisher<ReturnType, Error> {
-//        get(path)
-//    }
 }
 
 extension APIService {

@@ -14,7 +14,7 @@ import MeditoModels
 public protocol BackgroundSoundsServicing {
     var backgroundSoundsTitles: CurrentValueSubject<[String], Never> { get }
     func getSound(for soundTitle: String) -> BackgroundSound?
-    func getSoundsImageName(for soundTitle: String) -> String
+    func getSoundImageName(for soundTitle: String) -> String
 }
 
 public enum BackgroundSoundsImages: String, CaseIterable {
@@ -27,7 +27,7 @@ public enum BackgroundSoundsImages: String, CaseIterable {
     case safe
     case spring
     case zen
-
+    
     public static func getImageName(for sound: String) -> String {
         guard let name = BackgroundSoundsImages.allCases.first(where: { sound.lowercased().contains($0.rawValue) }) else {
             return BackgroundSoundsImages.forest.rawValue
@@ -36,7 +36,7 @@ public enum BackgroundSoundsImages: String, CaseIterable {
     }
 }
 
-final public class BackgroundSoundsService: BackgroundSoundsServicing {
+final public class BackgroundSoundsService: BackgroundSoundsServicing, ImageSharing {
     private var api: NetworkDataFetching
     private var cache: Cache<String, BackgroundSoundsContainer> = Cache()
     private var backgroundSounds: [String: BackgroundSound] = [:]
@@ -49,12 +49,12 @@ final public class BackgroundSoundsService: BackgroundSoundsServicing {
         self.api = apiService
         setUp()
     }
-
+    
     public func getSound(for soundTitle: String) -> BackgroundSound? {
         backgroundSounds[soundTitle]
     }
     
-    public func getSoundsImageName(for soundTitle: String) -> String {
+    public func getSoundImageName(for soundTitle: String) -> String {
         BackgroundSoundsImages.getImageName(for: soundTitle)
     }
 }
@@ -66,7 +66,7 @@ extension BackgroundSoundsService {
             setupData(with: cachedSoundsContainer)
             return
         }
-
+        
         api.getData(ofKind: BackgroundSoundsContainer.self,
                     from: APIConfig.EndPoints.backgroundSounds,
                     with: APIConfig.DefaultParams.backgroundSoundsParams)
@@ -79,14 +79,14 @@ extension BackgroundSoundsService {
                     break
                 }
             }) { [weak self] soundsContainer in
-                    guard let self = self else { return }
-                    if !soundsContainer.backgroundSounds.isEmpty {
-                        self.cache[self.cacheKey] = soundsContainer
-                    }
-                    self.setupData(with: soundsContainer)
+                guard let self = self else { return }
+                if !soundsContainer.backgroundSounds.isEmpty {
+                    self.cache[self.cacheKey] = soundsContainer
+                }
+                self.setupData(with: soundsContainer)
             }.store(in: &cancelBag)
     }
-
+    
     private func setupData(with container: BackgroundSoundsContainer) {
         var soundsNames: [String] = []
         soundsNames.append("None")
