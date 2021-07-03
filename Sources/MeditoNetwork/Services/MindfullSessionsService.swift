@@ -15,7 +15,7 @@ public protocol SessionServicing {
 }
 
 extension SessionServicing {
-    func getSession(for id: String,
+   public func getSession(for id: String,
                     contentType: ContentType,
                     and params: Params = APIConfig.DefaultParams.mindfullSessionParams) -> AnyPublisher<MindfullSession, Error> {
         getSession(for: id, contentType: contentType, and: params)
